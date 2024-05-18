@@ -1,0 +1,14 @@
+services:
+  database:
+    image: 5107333e08a8
+    container_name: database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: alfian
+      MYSQL_DATABASE: housy
+      MYSQL_USER: alfian
+      MYSQL_PASSWORD: alfian
+    ports:
+      - '3333:3306'
+    volumes:
+      - ./mysql/data:/var/lib/mysql
