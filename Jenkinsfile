@@ -14,7 +14,7 @@ pipeline {
          steps {
             sshagent([secret]) {
                 sh """ 
-               ssh -o StrictHostKeyChecking=no ${server} << EOF
+                ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 git pull origin ${branch}
                 exit
@@ -26,7 +26,7 @@ pipeline {
          steps {
             sshagent([secret]) {
                 sh """
-               ssh -o StrictHostKeyChecking=no ${server} << EOF
+                ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker build -t ${image}:${tag} .
                 exit
@@ -38,7 +38,7 @@ pipeline {
          steps {
             sshagent([secret]) {
                 sh """
-               ssh -o StrictHostKeyChecking=no ${server} << EOF
+                ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker run --name test_be -p 5000:5000 -d ${image}:${tag}
                 wget --spider localhost:5000
