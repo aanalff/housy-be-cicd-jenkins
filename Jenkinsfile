@@ -3,7 +3,7 @@ pipeline {
    environment {
        credential = 'team1'  // ID kredensial yang benar
        server = 'team1@103.127.133.144'
-       directory = '/home/alfian/housy-backend'
+       directory = '/home/team1/housy-backend'
        branch = 'main'
        service = 'backend'
        tag = 'latest'
