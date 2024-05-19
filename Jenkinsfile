@@ -2,7 +2,7 @@ def secret = 'vm'
 pipeline {
    agent any
    environment{
-       server = 'team1@103.127.133.144'
+       server = 'alfian@103.127.99.164'
        directory = '/home/alfian/housy-be-cicd-jenkins'
        branch = 'main'
        service = 'backend'
