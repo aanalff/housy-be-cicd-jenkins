@@ -68,9 +68,9 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: aanalff, passwordVariable: 'AanPrograms1.', usernameVariable: 'aanalff')]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no ${server} << EOF
-                        echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-                        docker tag ${image}:${tag} $DOCKERHUB_USERNAME/${image}:${tag}
-                        docker push $DOCKERHUB_USERNAME/${image}:${tag}
+                        echo $AanPrograms1. | docker login -u $aanalff --password-stdin
+                        docker tag ${image}:${tag} $aanalff/${image}:${tag}
+                        docker push $aanalff/${image}:${tag}
                         exit
                         EOF"""
                     }
