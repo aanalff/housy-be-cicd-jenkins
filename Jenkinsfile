@@ -25,7 +25,8 @@ pipeline {
        stage('Building application') {
          steps {
             sshagent([secret]) {
-                sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                sh """
+               ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker build -t ${image}:${tag} .
                 exit
@@ -36,7 +37,8 @@ pipeline {
        stage('Testing application') {
          steps {
             sshagent([secret]) {
-                sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                sh """
+               ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker run --name test_be -p 5000:5000 -d ${image}:${tag}
                 wget --spider localhost:5000
@@ -50,7 +52,8 @@ pipeline {
        stage('Deploy aplikasi on top docker'){
          steps {
             sshagent([secret]) {
-                sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                sh """
+               ssh -o StrictHostKeyChecking=no ${server} << EOF
                 sed -i '22c\\ image: ${image}:${tag}' docker-compose.yaml
                 docker compose up -d
                 cd ${directory}
@@ -62,7 +65,8 @@ pipeline {
        stage('Push image to docker hub'){
          steps {
             sshagent([secret]) {
-                sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                sh """
+               ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker push ${image}:${tag}
                 exit
