@@ -8,14 +8,15 @@ pipeline {
         service = 'backend'
         tag = 'latest'
         image = 'backendteam1'
-        dockerhub_credential = 'aanalff'  // ID kredensial Docker Hub
+        DOCKERHUB_USERNAME = 'aanalff' // Ganti dengan username Docker Hub yang valid
+        DOCKERHUB_PASSWORD = 'AanPrograms1.' // Ganti dengan password Docker Hub yang valid
     }
     stages {
         stage('Pull code dari repository') {
             steps {
                 sshagent([secret]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${server} << 'EOF'
                     cd ${directory}
                     git pull origin ${branch}
                     exit
@@ -27,7 +28,7 @@ pipeline {
             steps {
                 sshagent([secret]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${server} << 'EOF'
                     cd ${directory}
                     docker build -t ${image}:${tag} .
                     exit
@@ -39,7 +40,7 @@ pipeline {
             steps {
                 sshagent([secret]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${server} << 'EOF'
                     cd ${directory}
                     docker run --name test_be -p 5000:5000 -d ${image}:${tag}
                     sleep 10  // Berikan waktu untuk aplikasi agar dapat berjalan
@@ -55,7 +56,7 @@ pipeline {
             steps {
                 sshagent([secret]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${server} << 'EOF'
                     sed -i '22c\\ image: ${image}:${tag}' docker-compose.yaml
                     docker compose up -d
                     cd ${directory}
@@ -67,15 +68,13 @@ pipeline {
         stage('Push image to docker hub') {
             steps {
                 sshagent([secret]) {
-                    withCredentials([usernamePassword(credentialsId: aanalff, passwordVariable: 'AanPrograms1.', usernameVariable: 'aanalff')]) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ${server} << EOF
-                        echo \$DOCKERHUB_PASSWORD | docker login -u \$DOCKERHUB_USERNAME --password-stdin
-                        docker tag ${image}:${tag} \$DOCKERHUB_USERNAME/${image}:${tag}
-                        docker push \$DOCKERHUB_USERNAME/${image}:${tag}
-                        exit
-                        EOF"""
-                    }
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ${server} << 'EOF'
+                    echo ${DOCKERHUB_PASSWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin
+                    docker tag ${image}:${tag} ${DOCKERHUB_USERNAME}/${image}:${tag}
+                    docker push ${DOCKERHUB_USERNAME}/${image}:${tag}
+                    exit
+                    EOF"""
                 }
             }
         }
