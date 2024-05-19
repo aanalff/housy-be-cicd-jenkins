@@ -1,9 +1,9 @@
-def secret = 'global1'
+def secret = 'vm'
 pipeline {
    agent any
    environment{
        server = 'team1@103.127.133.144'
-       directory = '/home/team1/housy-be-cicd-jenkins'
+       directory = '/home/alfian/housy-be-cicd-jenkins'
        branch = 'main'
        service = 'backend'
        tag = 'latest'
