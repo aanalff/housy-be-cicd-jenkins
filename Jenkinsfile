@@ -1,5 +1,4 @@
 def secret = 'global1'
-def server1 = 'team1@103.127.133.144'
 pipeline {
    agent any
    environment{
@@ -14,11 +13,12 @@ pipeline {
        stage('Pull code dari repository'){
          steps {
             sshagent([secret]) {
-                sh '''ssh -o StrictHostKeyChecking=no ${server1} << EOF
+                sh """ 
+               ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 git pull origin ${branch}
                 exit
-                EOF'''
+                EOF"""
                }
            }
        }
