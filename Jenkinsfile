@@ -1,4 +1,4 @@
-def secret = 'global'
+def secret = 'global1'
 pipeline {
    agent any
    environment{
