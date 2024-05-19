@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment{
-       credential = 'vm'
+       credential = 'global'
        server = 'team1@103.127.133.144'
        directory = '/home/team1/housy-backend'
        branch = 'main'
