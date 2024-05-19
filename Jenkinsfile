@@ -1,7 +1,7 @@
+def secret = 'global'
 pipeline {
    agent any
    environment{
-       credential = 'global'
        server = 'team1@103.127.133.144'
        directory = '/home/team1/housy-backend'
        branch = 'main'
@@ -12,7 +12,7 @@ pipeline {
    stages {
        stage('Pull code dari repository'){
          steps {
-            sshagent([credential]) {
+            sshagent([secret]) {
                 sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 git pull origin ${branch}
@@ -23,7 +23,7 @@ pipeline {
        }
        stage('Building application') {
          steps {
-            sshagent([credential]) {
+            sshagent([secret]) {
                 sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker build -t ${image}:${tag} .
@@ -34,7 +34,7 @@ pipeline {
        }
        stage('Testing application') {
          steps {
-            sshagent([credential]) {
+            sshagent([secret]) {
                 sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker run --name test_be -p 5000:5000 -d ${image}:${tag}
@@ -48,7 +48,7 @@ pipeline {
        }
        stage('Deploy aplikasi on top docker'){
          steps {
-            sshagent([credential]) {
+            sshagent([secret]) {
                 sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
                 sed -i '22c\\ image: ${image}:${tag}' docker-compose.yaml
                 docker compose up -d
@@ -60,7 +60,7 @@ pipeline {
        }
        stage('Push image to docker hub'){
          steps {
-            sshagent([credential]) {
+            sshagent([secret]) {
                 sh '''ssh -o StrictHostKeyChecking=no ${server} << EOF
                 cd ${directory}
                 docker push ${image}:${tag}
