@@ -66,13 +66,13 @@ pipeline {
             steps {
                 sshagent([aanalff]) {
                     withCredentials([usernamePassword(credentialsId: aanalff, passwordVariable: 'AanPrograms1.', usernameVariable: 'aanalff')]) {
-                        sh '''
+                        sh """
                         ssh -o StrictHostKeyChecking=no ${server} << EOF
                         echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
                         docker tag ${image}:${tag} $DOCKERHUB_USERNAME/${image}:${tag}
                         docker push $DOCKERHUB_USERNAME/${image}:${tag}
                         exit
-                        EOF'''
+                        EOF"""
                     }
                 }
             }
