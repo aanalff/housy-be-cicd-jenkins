@@ -1,3 +1,1 @@
-# uhukkk
-opo meneh?
-.
+# yahuuu
