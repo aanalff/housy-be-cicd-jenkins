@@ -1,5 +1,5 @@
 # Gunakan image node versi 14 berbasis Alpine
-FROM node:14-alpine
+FROM node:10.23.0-alpine
 
 # Tentukan direktori kerja
 WORKDIR /app
