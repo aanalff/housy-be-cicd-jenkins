@@ -1,4 +1,4 @@
-services:
+services
   database:
     image: team1
     container_name: database
